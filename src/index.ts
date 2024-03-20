@@ -1,17 +1,32 @@
-import type { UnpluginFactory } from 'unplugin'
-import { createUnplugin } from 'unplugin'
-import type { Options } from './types'
+import type { UnpluginFactory } from "unplugin";
+import { createUnplugin } from "unplugin";
+import * as babel from "@babel/core";
+import babelJsxAbbreviation, { PluginOptions } from "babel-jsx-abbreviation";
 
-export const unpluginFactory: UnpluginFactory<Options | undefined> = options => ({
-  name: 'unplugin-starter',
+export const unpluginFactory: UnpluginFactory<PluginOptions | undefined> = (options) => ({
+  name: "unplugin-jsx-abbreviation",
   transformInclude(id) {
-    return id.endsWith('main.ts')
+    return id.endsWith(".tsx") || id.endsWith(".jsx");
   },
-  transform(code) {
-    return code.replace('__UNPLUGIN__', `Hello Unplugin! ${options}`)
+  enforce: "pre",
+  async transform(code, id) {
+    const plugins = [[babelJsxAbbreviation, options]];
+
+    if (id.endsWith(".tsx")) {
+      plugins.push([
+        // @ts-ignore missing type
+        await import("@babel/plugin-transform-typescript").then((r) => r.default),
+        // @ts-ignore
+        { isTSX: true, allowExtensions: true },
+      ]);
+    }
+    const result = babel.transformSync(code, {
+      plugins,
+    })!;
+    return result.code!;
   },
-})
+});
 
-export const unplugin = /* #__PURE__ */ createUnplugin(unpluginFactory)
+export const unplugin = /* #__PURE__ */ createUnplugin(unpluginFactory);
 
-export default unplugin
+export default unplugin;

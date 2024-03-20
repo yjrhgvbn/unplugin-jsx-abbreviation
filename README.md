@@ -11,11 +11,11 @@ npm i unplugin-jsx-abbreviation
 
 ```ts
 // vite.config.ts
-import Starter from "unplugin-jsx-abbreviation/vite";
+import unpluginJsxAbbreviation from "unplugin-jsx-abbreviation/vite";
 
 export default defineConfig({
   plugins: [
-    Starter({
+    unpluginJsxAbbreviation({
       /* options */
     }),
   ],
@@ -31,11 +31,11 @@ Example: [`playground/`](./playground/)
 
 ```ts
 // rollup.config.js
-import Starter from "unplugin-jsx-abbreviation/rollup";
+import unpluginJsxAbbreviation from "unplugin-jsx-abbreviation/rollup";
 
 export default {
   plugins: [
-    Starter({
+    unpluginJsxAbbreviation({
       /* options */
     }),
   ],
@@ -106,10 +106,10 @@ module.exports = {
 ```ts
 // esbuild.config.js
 import { build } from "esbuild";
-import Starter from "unplugin-jsx-abbreviation/esbuild";
+import unpluginJsxAbbreviation from "unplugin-jsx-abbreviation/esbuild";
 
 build({
-  plugins: [Starter()],
+  plugins: [unpluginJsxAbbreviation()],
 });
 ```
 
