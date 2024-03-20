@@ -1,10 +1,57 @@
 # unplugin-jsx-abbreviation
 
+automatic replacement of jsx attributes
+
 ## Install
 
 ```bash
 npm i unplugin-jsx-abbreviation
 ```
+
+## Options
+
+```js
+{
+  replace: {
+    // the matching attribute
+    c: {
+      // the attribute name to replace
+      name: "className",
+      // the value to replace with
+      value: (v) => {
+        // v is the value of the attribute, always a string
+        // <div c={"s"} /> => v = `"s"`, <div c="s" /> => v = `"s"`, <div c={["s"]} /> => v = `["s"]`
+        return `{clsx(${v})}`;
+      },
+    },
+
+    // multiple attributes
+    // <div c={"s"} /> will be replaced with <div className={clsx("s")} style={"s"}/>
+    c: [{
+      name: (n) => "className",
+      value: (v) => {
+        return `{clsx(${v})}`;
+      },
+    },
+    {
+      transform: (n, v) => {
+        return {
+          name: "style",
+          value: `{${v}}`,
+        };
+      },
+    }],
+  },
+}
+```
+
+you can see the [playground](./playground/vite.config.ts) for more details.
+
+## Auto import
+
+If you want auto import package. you can use [unplugin-auto-import](https://github.com/unplugin/unplugin-auto-import) to auto import package for you.
+
+you can see the [playground](./playground/vite.config.ts) about how to use it.
 
 <details>
 <summary>Vite</summary><br>
@@ -62,45 +109,6 @@ module.exports = {
 <br></details>
 
 <details>
-<summary>Nuxt</summary><br>
-
-```ts
-// nuxt.config.js
-export default defineNuxtConfig({
-  modules: [
-    [
-      "unplugin-jsx-abbreviation/nuxt",
-      {
-        /* options */
-      },
-    ],
-  ],
-});
-```
-
-> This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
-
-<br></details>
-
-<details>
-<summary>Vue CLI</summary><br>
-
-```ts
-// vue.config.js
-module.exports = {
-  configureWebpack: {
-    plugins: [
-      require("unplugin-jsx-abbreviation/webpack")({
-        /* options */
-      }),
-    ],
-  },
-};
-```
-
-<br></details>
-
-<details>
 <summary>esbuild</summary><br>
 
 ```ts
@@ -114,3 +122,19 @@ build({
 ```
 
 <br></details>
+
+## typescript
+
+If you are using TypeScript, you need to add a global type file to your project.
+
+for example, create a `type.d.ts` file in your `src` folder and add the following content to it:
+
+```ts
+declare namespace React {
+  interface HTMLAttributes {
+    c?: string | string[];
+  }
+}
+```
+
+you can see the [playground](./playground/src/type.d.ts) for more details.

@@ -25,11 +25,6 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./astro": {
-      "types": "./dist/astro.d.ts",
-      "import": "./dist/astro.js",
-      "require": "./dist/astro.cjs"
-    },
     "./rspack": {
       "types": "./dist/rspack.d.ts",
       "import": "./dist/rspack.js",
@@ -54,11 +49,6 @@
       "types": "./dist/esbuild.d.ts",
       "import": "./dist/esbuild.js",
       "require": "./dist/esbuild.cjs"
-    },
-    "./nuxt": {
-      "types": "./dist/nuxt.d.ts",
-      "import": "./dist/nuxt.js",
-      "require": "./dist/nuxt.cjs"
     },
     "./types": {
       "types": "./dist/types.d.ts",
